@@ -17,7 +17,7 @@ docker-compose up --build
 ```
 - Create and migrate the database.  
 ```
-docker-compose exec app rails db:create
-docker-compose exec app rails db:migrate
+docker-compose exec api rails db:create
+docker-compose exec api rails db:migrate
 ```
-- To stop the application, go to your terminal where you are running the docker containers and press `CTRL+C`. Then run `docker-compose stop` for good measure.
+- To stop the application, go to your terminal where you are running the docker containers and press `CTRL+C`. Then run `docker-compose down` for good measure.
