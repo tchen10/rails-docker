@@ -6,11 +6,11 @@ module V1
 
       desc 'Return all user records'
       params do
-        optional :query,  type: String
+        optional :query, type: String
       end
       get '/' do
         declared_params = declared params, include_missing: false
-        present User.all, with: V1::Entities::UserEntity
+        present UserSearchService.find(declared_params[:query]), with: V1::Entities::UserEntity
       end
     end
   end
