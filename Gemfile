@@ -6,12 +6,12 @@ git_source(:github) do |repo_name|
 end
 
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.1.1'
-# Use PostgresSQL as the database for Active Record
 gem 'pg'
-# Use Puma as the app server
 gem 'puma', '~> 3.7'
+gem 'grape'
+gem 'grape-entity', '~> 0.5.1'
+
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 # gem 'jbuilder', '~> 2.5'
 # Use Redis adapter to run Action Cable in production
@@ -30,6 +30,8 @@ group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails'
   gem 'shoulda-matchers', '~> 3.1'
+  gem 'factory_bot_rails'
+  gem 'pry'
 end
 
 group :development do

@@ -18,11 +18,15 @@ docker-compose up --build
 ```
 - Create and migrate the database.  
 ```
-docker-compose exec api rails db:create
-docker-compose exec api rails db:migrate
+docker-compose exec api rake db:create
+docker-compose exec api rake db:migrate
 ```
 - To stop the application, go to your terminal where you are running the docker containers and press `CTRL+C`. Then run `docker-compose down` for good measure.
 
+## Local development
+
+Developing a Rails application on a docker container is not so different from development in a local environment.  You should be able to run all commands as you normally would, but you must prefix them with `docker-compose exec api`.
+ 
 # Running the application
 
 # Testing
