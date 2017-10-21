@@ -4,7 +4,7 @@ module UserCreator
   def self.for(params)
     User.create!(email: params[:email],
                  phone_number: params[:phone_number],
-                 password: create_password_hash( params[:password]),
+                 password: create_password_hash(params[:password]),
                  key: create_unique_key,
                  full_name: params[:full_name],
                  metadata: params[:metadata])
