@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UserSearchService do
-  describe '#for' do
+  describe '#find' do
     before :each do
       create :user, email: 'michael@email.com', full_name: 'Michael Scott', metadata: 'best, boss'
       create :user, email: 'dwight@email.com', full_name: 'Dwight Shrute', metadata: 'beets, bears'
