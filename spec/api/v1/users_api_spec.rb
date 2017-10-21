@@ -12,7 +12,7 @@ RSpec.describe V1::UsersApi do
       get '/v1/users', params: { query: 'query' }
 
       expect(response.status).to eq 200
-      expect(JSON.parse(response.body).size).to eq 2
+      expect(JSON.parse(response.body)['users'].count).to eq 2
     end
 
     it 'returns user with attributes' do
@@ -21,7 +21,7 @@ RSpec.describe V1::UsersApi do
       get '/v1/users'
 
       expect(response.status).to eq 200
-      user_response = JSON.parse(response.body).first
+      user_response = JSON.parse(response.body)['users'].first
       expect(user_response.keys).to contain_exactly('email',
                                                     'phone_number',
                                                     'full_name',
@@ -36,7 +36,7 @@ RSpec.describe V1::UsersApi do
       get '/v1/users'
 
       expect(response.status).to eq 200
-      expect(JSON.parse(response.body)).to eq []
+      expect(JSON.parse(response.body)['users']).to eq []
     end
   end
 
@@ -94,7 +94,7 @@ RSpec.describe V1::UsersApi do
 
         post '/v1/users', params: params
 
-        expect(response.status).to eq 400
+        expect(response.status).to eq 422
         expect(JSON.parse(response.body)).to eq({'errors' => ['email is missing']})
       end
     end

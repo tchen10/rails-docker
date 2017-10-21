@@ -10,7 +10,7 @@ module V1
       end
       get '/' do
         declared_params = declared params, include_missing: false
-        present UserSearchService.find(declared_params[:query]), with: V1::Entities::UserEntity
+        present UserSearchService.find(declared_params[:query]), with: V1::Entities::UsersEntity
       end
 
       desc 'Create a user'
