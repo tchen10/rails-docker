@@ -5,4 +5,10 @@ class User < ApplicationRecord
   validates_length_of :password, :key, :account_key, maximum: 100
   validates_length_of :phone_number, maximum: 20
   validates_length_of :metadata, maximum: 2000
+
+  after_create :retrieve_account_key
+
+  def retrieve_account_key
+    AccountKeyWorker.new.perform(email, key)
+  end
 end

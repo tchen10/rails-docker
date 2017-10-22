@@ -1,8 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe V1::UsersApi do
-  let(:user_1) { create :user, email: 'user1@email.com' }
-  let(:user_2) { create :user, email: 'user2@email.com' }
+  let(:user_1) { create :user, :stop_callback, email: 'user1@email.com' }
+  let(:user_2) { create :user, :stop_callback, email: 'user2@email.com' }
 
   describe 'GET /users' do
     it 'calls user search service with query parameter' do
