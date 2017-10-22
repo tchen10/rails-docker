@@ -1,9 +1,5 @@
 FactoryBot.define do
   factory :user, class: User do
-    trait :stop_callback do
-      before(:create) { |user| user.define_singleton_method(:retrieve_account_key) {} }
-    end
-
     # required
     email 'user@email.com'
 

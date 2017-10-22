@@ -5,4 +5,8 @@ module UserAccountKeyService
 
     user.update_attribute(:account_key, account_key)
   end
+
+  def self.request_account_key(email, key)
+    AccountKeyWorker.new.perform(email, key)
+  end
 end

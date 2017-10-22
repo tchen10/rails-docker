@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe UserSearchService do
   describe '#find' do
     before :each do
-      create :user, :stop_callback, email: 'michael@email.com', full_name: 'Michael Scott', metadata: 'best, boss'
-      create :user, :stop_callback, email: 'dwight@email.com', full_name: 'Dwight Shrute', metadata: 'beets, bears'
+      create :user, email: 'michael@email.com', full_name: 'Michael Scott', metadata: 'best, boss'
+      create :user, email: 'dwight@email.com', full_name: 'Dwight Shrute', metadata: 'beets, bears'
     end
 
     context 'search with query' do

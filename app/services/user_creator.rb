@@ -2,12 +2,14 @@ module UserCreator
   include BCrypt
 
   def self.for(params)
-    User.create!(email: params[:email],
-                 phone_number: params[:phone_number],
-                 password: create_password_hash(params[:password]),
-                 key: create_unique_key,
-                 full_name: params[:full_name],
-                 metadata: params[:metadata])
+    user = User.create!(email: params[:email],
+                       phone_number: params[:phone_number],
+                       password: create_password_hash(params[:password]),
+                       key: create_unique_key,
+                       full_name: params[:full_name],
+                       metadata: params[:metadata])
+    UserAccountKeyService.request_account_key user.email, user.key
+    user
   end
 
   private

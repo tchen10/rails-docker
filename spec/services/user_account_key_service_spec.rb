@@ -6,7 +6,7 @@ RSpec.describe UserAccountKeyService do
       it 'updates user with new account key' do
         email = 'existingUser@email.com'
         account_key = 'new account key'
-        create :user, :stop_callback, email: email
+        create :user, email: email
 
         UserAccountKeyService.update email,account_key
 
@@ -22,6 +22,19 @@ RSpec.describe UserAccountKeyService do
         expect { UserAccountKeyService.update email,account_key }
           .to raise_error ActiveRecord::RecordNotFound
       end
+    end
+  end
+
+  describe '#retrieve_account_key' do
+    it 'calls AccountKeyWorker to perform task' do
+      email = 'user@email.com'
+      key = 'random_key'
+
+      account_key_worker = double(AccountKeyWorker)
+      expect(AccountKeyWorker).to receive(:new).and_return(account_key_worker)
+      expect(account_key_worker).to receive(:perform).with(email, key)
+
+      UserAccountKeyService.request_account_key email, key
     end
   end
 end
