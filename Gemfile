@@ -16,6 +16,7 @@ gem 'redis', '~> 4.0.1'
 gem 'sidekiq'
 gem 'httparty'
 gem 'bunny', '~> 2.7.0'
+gem 'sneakers'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
