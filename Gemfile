@@ -15,6 +15,7 @@ gem 'bcrypt', '~> 3.1.7'
 gem 'redis', '~> 4.0.1'
 gem 'sidekiq'
 gem 'httparty'
+gem 'bunny', '~> 2.7.0'
 
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]

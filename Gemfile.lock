@@ -38,6 +38,7 @@ GEM
       i18n (~> 0.7)
       minitest (~> 5.1)
       tzinfo (~> 1.1)
+    amq-protocol (2.2.0)
     arel (8.0.0)
     axiom-types (0.1.1)
       descendants_tracker (~> 0.0.4)
@@ -45,6 +46,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.1)
     bcrypt (3.1.11)
     builder (3.2.3)
+    bunny (2.7.1)
+      amq-protocol (>= 2.2.0)
     byebug (9.1.0)
     coderay (1.1.2)
     coercible (1.0.0)
@@ -197,6 +200,7 @@ PLATFORMS
 
 DEPENDENCIES
   bcrypt (~> 3.1.7)
+  bunny (~> 2.7.0)
   byebug
   factory_bot_rails
   grape
