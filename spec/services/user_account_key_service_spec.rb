@@ -25,14 +25,17 @@ RSpec.describe UserAccountKeyService do
     end
   end
 
-  describe '#retrieve_account_key' do
-    it 'calls AccountKeyWorker to perform task' do
+  describe '#request_account_key' do
+    it 'calls EventPublisher to publish NewUserEvent' do
       email = 'user@email.com'
       key = 'random_key'
 
-      account_key_worker = double(AccountKeyWorker)
-      expect(AccountKeyWorker).to receive(:new).and_return(account_key_worker)
-      expect(account_key_worker).to receive(:perform).with(email, key)
+      new_user_event = double(NewUserEvent)
+      expect(NewUserEvent).to receive(:new).with(email, key).and_return(new_user_event)
+
+      event_publisher = double(EventPublisher)
+      expect(EventPublisher).to receive(:new).with('new_users', new_user_event).and_return(event_publisher)
+      expect(event_publisher).to receive(:publish)
 
       UserAccountKeyService.request_account_key email, key
     end
