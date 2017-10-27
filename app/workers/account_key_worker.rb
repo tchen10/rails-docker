@@ -9,10 +9,13 @@ class AccountKeyWorker
       raise MissingAttributeError unless account_key_message.valid?
 
       UserAccountKeyService.update(account_key_message.email, account_key_message.account_key)
+      ack!
     rescue MissingAttributeError => e
       Rails.logger.info "#{self.class.name}: #{message} is missing required attributes"
+      requeue!
     rescue ActiveRecord::RecordNotFound => e
       Rails.logger.info "#{self.class.name}: User associated with email #{account_key_message.email} not found. #{e.message}"
+      reject!
     end
   end
 end
