@@ -1,9 +1,10 @@
 class AccountKeyWorker
   include Sneakers::Worker
-  from_queue 'account_keys'
+  from_queue 'account_keys',
+             { :arguments => {:'x-dead-letter-exchange' => 'account_keys-retry'} }
 
   def work(message)
-    Rails.logger.info "#{self.class.name}: Received #{message}"
+    Sneakers.logger.info "#{self.class.name} Received #{message}"
     begin
       account_key_message = AccountKeyMessage.new.create_from_json(message)
       raise MissingAttributeError unless account_key_message.valid?
@@ -11,10 +12,10 @@ class AccountKeyWorker
       UserAccountKeyService.update(account_key_message.email, account_key_message.account_key)
       ack!
     rescue MissingAttributeError => e
-      Rails.logger.info "#{self.class.name}: #{message} is missing required attributes"
-      requeue!
+      Sneakers.logger.info "#{self.class.name} Message received is missing required attributes. #{message}"
+      reject!
     rescue ActiveRecord::RecordNotFound => e
-      Rails.logger.info "#{self.class.name}: User associated with email #{account_key_message.email} not found. #{e.message}"
+      Sneakers.logger.info "#{self.class.name} User associated with email #{account_key_message.email} not found."
       reject!
     end
   end
