@@ -1,9 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe AccountKeyWorker do
+  before :each do
+    logger = double(Sneakers.logger)
+    allow(Sneakers).to receive(:logger).and_return(logger)
+    allow(logger).to receive(:info)
+  end
+
   describe '.work' do
     email = 'user@email.com'
     account_key = 'new account key'
+
+    before :each do
+      @account_key_worker = AccountKeyWorker.new
+    end
 
     it 'calls user account key service with email and key' do
       message = {
@@ -12,8 +22,9 @@ RSpec.describe AccountKeyWorker do
       }.to_json
 
       expect(UserAccountKeyService).to receive(:update).with(email, account_key)
+      expect(@account_key_worker).to receive(:ack!)
 
-      AccountKeyWorker.new.work message
+      @account_key_worker.work message
     end
 
     context 'when message in invalid' do
@@ -27,7 +38,9 @@ RSpec.describe AccountKeyWorker do
         expect(account_key_message).to receive(:create_from_json).with(message)
                                        .and_raise(MissingAttributeError)
 
-        AccountKeyWorker.new.work message
+        expect(@account_key_worker).to receive(:reject!)
+
+        @account_key_worker.work message
       end
     end
 
@@ -40,7 +53,10 @@ RSpec.describe AccountKeyWorker do
 
         expect(UserAccountKeyService).to receive(:update).with('not a user', account_key)
                                            .and_raise(ActiveRecord::RecordNotFound)
-        AccountKeyWorker.new.work message
+
+        expect(@account_key_worker).to receive(:reject!)
+
+        @account_key_worker.work message
       end
     end
   end

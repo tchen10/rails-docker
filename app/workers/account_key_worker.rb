@@ -1,7 +1,6 @@
 class AccountKeyWorker
   include Sneakers::Worker
-  from_queue 'account_keys',
-             { :arguments => {:'x-dead-letter-exchange' => 'account_keys-retry'} }
+  from_queue 'account_keys'
 
   def work(message)
     Sneakers.logger.info "#{self.class.name} Received #{message}"
