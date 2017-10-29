@@ -22,6 +22,7 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 3.1'
   gem 'factory_bot_rails'
   gem 'pry'
+  gem 'bunny-mock'
 end
 
 group :development do
