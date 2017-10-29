@@ -8,7 +8,7 @@ RSpec.describe UserAccountKeyService do
         account_key = 'new account key'
         create :user, email: email
 
-        UserAccountKeyService.update email,account_key
+        UserAccountKeyService.update email, account_key
 
         db_user = User.first
         expect(db_user.account_key).to eq account_key
@@ -19,7 +19,7 @@ RSpec.describe UserAccountKeyService do
       it 'raises RecordNotFound error' do
         email = 'lostUser@email.com'
         account_key = 'some account key'
-        expect { UserAccountKeyService.update email,account_key }
+        expect { UserAccountKeyService.update email, account_key }
           .to raise_error ActiveRecord::RecordNotFound
       end
     end
@@ -33,8 +33,11 @@ RSpec.describe UserAccountKeyService do
       new_user_event = double(NewUserEvent)
       expect(NewUserEvent).to receive(:new).with(email, key).and_return(new_user_event)
 
+      queue_options = { :durable => true,
+                        :arguments => { :'x-dead-letter-exchange' => 'new_users-retry' } }
       event_publisher = double(EventPublisher)
-      expect(EventPublisher).to receive(:new).with('new_users', new_user_event).and_return(event_publisher)
+      expect(EventPublisher).to receive(:new).with('new_users', new_user_event, queue_options)
+                                  .and_return(event_publisher)
       expect(event_publisher).to receive(:publish)
 
       UserAccountKeyService.request_account_key email, key

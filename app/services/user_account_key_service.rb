@@ -7,6 +7,10 @@ module UserAccountKeyService
   end
 
   def self.request_account_key(email, key)
-    EventPublisher.new('new_users', NewUserEvent.new(email, key)).publish
+    new_user_event = NewUserEvent.new(email, key)
+    queue_options = { :durable => true,
+                      :arguments => { :'x-dead-letter-exchange' => 'new_users-retry' } }
+
+    EventPublisher.new('new_users', new_user_event, queue_options).publish
   end
 end

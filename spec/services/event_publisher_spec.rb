@@ -8,7 +8,9 @@ RSpec.describe EventPublisher do
       allow(Bunny).to receive(:new).and_return(@mock_bunny)
 
 
-      EventPublisher.new('test.queue', test_event).publish
+      EventPublisher.new('test.queue',
+                         test_event,
+                         {:durable => true}).publish
     end
 
     it 'binds exchange to the correct queue' do
@@ -18,7 +20,12 @@ RSpec.describe EventPublisher do
       expect(queue.bound_to? exchange).to eq true
     end
 
-    it 'publishes the event to queue with expected options' do
+    it 'adds expected queue options' do
+      queue = @mock_bunny.queues['test.queue']
+      expect(queue.opts).to eq ({:durable => true})
+    end
+
+    it 'publishes the event to queue with expected message options' do
       queue = @mock_bunny.queues['test.queue']
       expect(queue.message_count).to eq 1
 
